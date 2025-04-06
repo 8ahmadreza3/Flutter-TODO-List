@@ -45,3 +45,22 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// Main screen that displays the todo list
+// A widget that can change its state/UI dynamically (mutable)
+class TodoListScreen extends StatefulWidget {
+  const TodoListScreen({super.key});
+
+  @override
+  State<TodoListScreen> createState() => _TodoListScreenState();
+}
+
+// State class for the todo list screen
+class _TodoListScreenState extends State<TodoListScreen> {
+  // List to store all todo items
+  final List<TodoItem> _todoItems = [];
+
+  // Controllers for text fields
+  final TextEditingController _textController = TextEditingController();
+  final TextEditingController _editController = TextEditingController();
+
