@@ -198,3 +198,102 @@ class _TodoListScreenState extends State<TodoListScreen> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    // Main page scaffold with dynamic task list, empty state message and add button
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('To-Do List App'),
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.white,
+      body: _todoItems.isEmpty
+          ? Center(
+              child: Text(
+                'No tasks found\nClick the + button to add one',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey[700],
+                ),
+              ),
+            )
+          : ListView.builder(
+              // Efficiently builds a scrollable list of todo items with interactive cards
+              itemCount: _todoItems.length,
+              itemBuilder: (context, index) {
+                final item = _todoItems[index];
+                return Card(
+                  // Interactive todo item card with status toggle, text and action buttons
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  color: item.isCompleted ? Colors.grey[200] : Colors.blue[50],
+                  child: InkWell(
+                    // Tappable area with ripple effect that toggles task completion status
+                    onTap: () =>
+                        _toggleTodoItem(index), // Toggle completion on tap
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        children: [
+                          // Completion indicator
+                          Icon(
+                            item.isCompleted
+                                ? Icons.check_circle_outline
+                                : Icons.radio_button_unchecked,
+                            color: Colors.blue[700],
+                            size: 28,
+                          ),
+                          const SizedBox(width: 12),
+                          // Task title
+                          // Expands text to fill available space with conditional strikethrough
+                          Expanded(
+                            child: Text(
+                              item.title,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                decoration: item.isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                              ),
+                            ),
+                          ),
+                          // Edit button
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            color: Colors.blue[700],
+                            onPressed: () => _editTodoItem(index),
+                          ),
+                          // Delete button (trash icon)
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            color: Colors.red[400],
+                            onPressed: () => _deleteTodoItem(index),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _displayAddDialog,
+        tooltip: 'Add Task',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+/// Data model for a todo item
+class TodoItem {
+  String title;
+  bool isCompleted;
+
+  TodoItem({
+    required this.title,
+    required this.isCompleted,
+  });
+}
