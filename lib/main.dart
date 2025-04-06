@@ -64,3 +64,30 @@ class _TodoListScreenState extends State<TodoListScreen> {
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _editController = TextEditingController();
 
+  /// Adds a new item to the todo list
+  void _addTodoItem(String task) {
+    if (task.trim().isNotEmpty) {
+      setState(() {
+        _todoItems.add(TodoItem(
+          title: task,
+          isCompleted: false,
+        ));
+      });
+      _textController.clear();
+    }
+  }
+
+  /// Toggles the completion status of an item
+  void _toggleTodoItem(int index) {
+    setState(() {
+      _todoItems[index].isCompleted = !_todoItems[index].isCompleted;
+    });
+  }
+
+  /// Deletes an item from the list
+  void _deleteTodoItem(int index) {
+    setState(() {
+      _todoItems.removeAt(index);
+    });
+  }
+
